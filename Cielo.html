@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Atardecer Ventoso y Dinámico</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Codystar&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0; padding: 0; overflow: hidden;
+            height: 100vh;
+            display: flex; justify-content: center; align-items: flex-end;
+            font-family: 'Fredoka One', cursive; 
+            /* Fondo realista atardecer */
+            background: linear-gradient(to bottom, #2b32b2 0%, #7b4397 40%, #dc2430 75%, #fdbb2d 100%);
+            transition: background 2s ease-in-out;
+        }
+        body.fase-jalando { background: #05070a; }
+
+
+        .escena-amanecer {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 50; pointer-events: none;
+            transition: opacity 1.5s ease-in-out;
+            overflow: hidden; 
+        }
+        body.en-accion .escena-amanecer { opacity: 0; }
+
+        .sol-amanecer {
+            position: absolute;
+            width: 140px; height: 140px;
+            border-radius: 50%;
+            background: #fff; 
+            box-shadow: 0 0 40px 10px #fdbb2d, 0 0 100px 30px rgba(255, 94, 98, 0.6);
+            bottom: 30%; 
+            left: 5%;
+            animation: bajada-sol 120s linear forwards;
+        }
+        @keyframes bajada-sol {
+            to { bottom: -50px; left: 25%; transform: scale(0.9); background-color: #ffaa00; }
+        }
+
+
+        .contenedor-viento-visual {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 55; 
+        }
+        .linea-viento {
+            position: absolute;
+            height: 2px; 
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
+            filter: blur(2px);
+            border-radius: 10px;
+            opacity: 0;
+            animation: pasar-viento linear infinite;
+        }
+        @keyframes pasar-viento {
+            0% { transform: translateX(-200px); opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateX(150vw); opacity: 0; } 
+        }
+        
+        .v1 { top: 20%; width: 150px; animation-duration: 4s; animation-delay: 0s; }
+        .v2 { top: 45%; width: 250px; animation-duration: 6s; animation-delay: 2s; }
+        .v3 { top: 70%; width: 100px; animation-duration: 3s; animation-delay: 1s; }
+        .v4 { top: 30%; width: 300px; animation-duration: 8s; animation-delay: 4s; }
+        .v5 { top: 60%; width: 180px; animation-duration: 5s; animation-delay: 3s; }
+
+
+        .capa-pasto {
+            position: absolute; bottom: -20px; left: -25%; width: 150%;
+            border-radius: 50% 50% 0 0 / 20% 30% 0 0; 
+            opacity: 1;
+            animation: viento ease-in-out infinite alternate;
+        }
+        .pasto-atras { height: 180px; background-color: #1e3c0e; animation-duration: 8s; z-index: 1; }
+        .pasto-medio { height: 120px; background-color: #2f4f18; animation-duration: 6s; bottom: -10px; z-index: 2; }
+        .pasto-frente { height: 70px; background-color: #486326; animation-duration: 4s; bottom: 0; z-index: 3; }
+        @keyframes viento { from { transform: translateX(-20px); } to { transform: translateX(20px); } }
+
+
+        #btn-accion {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            padding: 20px 50px; border-radius: 50px;
+            background: rgba(255, 255, 255, 0.1); 
+            border: 2px solid rgba(255,255,255,0.8); color: white;
+            font-size: 1.5rem; font-family: 'Fredoka One', cursive;
+            letter-spacing: 2px; text-transform: uppercase;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px); cursor: pointer; z-index: 200;
+            transition: transform 0.2s, opacity 0.5s;
+        }
+        #btn-accion:active { transform: translate(-50%, -45%); background: rgba(255, 255, 255, 0.3); }
+        body.en-accion #btn-accion { opacity: 0; pointer-events: none; transform: translate(-50%, -70%); }
+
+        .sujeto-container {
+            position: absolute; bottom: 30px; z-index: 170; width: 140px; height: 140px;
+            display: flex; justify-content: center; align-items: flex-end; transition: transform 0.3s;
+        }
+        .animacion-respirar { animation: respirar 2.5s infinite ease-in-out; }
+        @keyframes respirar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        .pixel-art { width: 100%; height: auto; image-rendering: pixelated; filter: drop-shadow(5px 5px 10px rgba(0,0,0,0.7)); }
+
+        .cuerda-container { position: absolute; bottom: 90px; left: 55%; width: 3px; height: 0; z-index: 165; transform: translateX(-50%); }
+        .soga { width: 100%; height: 100%; background: #3e2723; box-shadow: inset 1px 0 2px rgba(0,0,0,0.5); }
+        body.fase-lanzando .cuerda-container { height: 100vh; transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        body.fase-jalando .cuerda-container { height: 0; transition: height 1.5s ease-in-out; }
+
+        .contenedor-cielo { position: absolute; top: -110%; left: 0; width: 100%; height: 110%; z-index: 100; background: radial-gradient(circle at bottom, #1b2735 0%, #090a0f 100%); transition: top 1.5s ease-in-out; overflow: hidden; }
+        body.fase-jalando .contenedor-cielo { top: 0; }
+        #constelacion { position: absolute; top: 35%; left: 0; width: 100%; text-align: center; font-family: 'Codystar', cursive; font-weight: 800; color: #fff; font-size: 15vw; opacity: 0; text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #4FACFE; transform: scale(0.8); transition: opacity 3s ease, transform 4s ease; z-index: 90; letter-spacing: 5px; }
+        body.fase-jalando #constelacion { opacity: 0.8; transform: scale(1); transition-delay: 1.5s; }
+        .movimiento-cielo { width: 100%; height: 100%; animation: rotacion 60s linear infinite; }
+        @keyframes rotacion { from { transform: translateY(0); } to { transform: translateY(-50px); } }
+        .estrella { position: absolute; background: white; border-radius: 50%; animation: titilar 4s infinite alternate; }
+        @keyframes titilar { 0% { opacity: 0.3; } 100% { opacity: 1; } }
+        .fugaz { position: absolute; width: 4px; height: 4px; background: linear-gradient(to right, white, transparent); border-radius: 50%; opacity: 0; z-index: 101; box-shadow: -20px 0 20px rgba(255,255,255,0.5); }
+        .fugaz::before { content: ''; position: absolute; top: 50%; transform: translateY(-50%); right: 0; width: 150px; height: 1px; background: linear-gradient(to left, white, transparent); }
+        @keyframes anim-fugaz { 0% { transform: translate(0, 0) rotate(-45deg) scale(0.5); opacity: 1; } 100% { transform: translate(-400px, 400px) rotate(-45deg) scale(1); opacity: 0; } }
+        .luna-real { position: absolute; top: 15%; left: 50%; transform: translateX(-50%); width: 120px; height: 120px; background-color: #dcdcdc; border-radius: 50%; box-shadow: inset -20px -20px 50px rgba(0,0,0,0.5), 0 0 50px rgba(255, 255, 255, 0.6); background-image: radial-gradient(circle at 30% 30%, rgba(0,0,0,0.1) 0%, transparent 16%), radial-gradient(circle at 70% 60%, rgba(0,0,0,0.1) 0%, transparent 11%); }
+    </style>
+</head>
+<body>
+
+    <div class="escena-amanecer">
+        
+        <div class="contenedor-viento-visual">
+            <div class="linea-viento v1"></div>
+            <div class="linea-viento v2"></div>
+            <div class="linea-viento v3"></div>
+            <div class="linea-viento v4"></div>
+            <div class="linea-viento v5"></div>
+        </div>
+
+        <div class="sol-amanecer"></div>
+        
+        <div class="capa-pasto pasto-atras"></div>
+        <div class="capa-pasto pasto-medio"></div>
+        <div class="capa-pasto pasto-frente"></div>
+    </div>
+
+    <button id="btn-accion">Quisieras ser mi novia?</button>
+    <div class="cuerda-container"><div class="soga"></div></div>
+    <div class="sujeto-container animacion-respirar">
+        <img id="img-personaje" class="pixel-art" src="" alt="Keyla">
+    </div>
+    <div class="contenedor-cielo">
+        <div class="movimiento-cielo" id="cielo-estrellas">
+            <div class="luna-real"></div>
+            <div id="constelacion"></div>
+        </div>
+    </div>
+
+    <script>
+        const NOMBRE_CARPETA = "KeylaCielo"; 
+        const PALABRA_CIELO = "TE AMOO"; 
+
+        const btn = document.getElementById('btn-accion');
+        const body = document.body;
+        const imgPersonaje = document.getElementById('img-personaje');
+        const containerPersonaje = document.querySelector('.sujeto-container');
+        const capaCielo = document.getElementById('cielo-estrellas');
+        const divConstelacion = document.getElementById('constelacion');
+
+        const IMG_QUIETO = `${NOMBRE_CARPETA}/quieto.png`; 
+        const IMG_LANZANDO = `${NOMBRE_CARPETA}/lanzando.png`; 
+        imgPersonaje.src = IMG_QUIETO;
+        divConstelacion.innerText = PALABRA_CIELO;
+
+        for(let i=0; i<100; i++) {
+            let s = document.createElement('div');
+            s.className = 'estrella';
+            s.style.top = Math.random() * 100 + '%';
+            s.style.left = Math.random() * 100 + '%';
+            let tamano = Math.random() * 2 + 1; 
+            s.style.width = tamano + 'px'; s.style.height = tamano + 'px';
+            s.style.opacity = Math.random();
+            s.style.animationDelay = Math.random() * 2 + 's';
+            capaCielo.appendChild(s);
+        }
+
+        function lanzarEstrellaFugaz() {
+            if (!body.classList.contains('fase-jalando')) return; 
+            const fugaz = document.createElement('div');
+            fugaz.className = 'fugaz';
+            fugaz.style.top = (Math.random() * 50) + '%';
+            fugaz.style.left = (Math.random() * 50 + 50) + '%';
+            const velocidad = (Math.random() * 1) + 0.5;
+            fugaz.style.animation = `anim-fugaz ${velocidad}s linear forwards`;
+            capaCielo.appendChild(fugaz);
+            setTimeout(() => { fugaz.remove(); }, 2000);
+            setTimeout(lanzarEstrellaFugaz, Math.random() * 1300 + 200);
+        }
+
+        btn.addEventListener('click', () => {
+            body.classList.add('en-accion'); 
+            containerPersonaje.classList.remove('animacion-respirar');
+            body.classList.add('fase-lanzando');
+            imgPersonaje.src = IMG_LANZANDO; 
+
+            setTimeout(() => {
+                body.classList.remove('fase-lanzando');
+                body.classList.add('fase-jalando');
+                imgPersonaje.src = IMG_QUIETO; 
+                containerPersonaje.style.animation = 'none'; 
+                let vibrar = setInterval(() => {
+                   if(!body.classList.contains('fase-jalando')) clearInterval(vibrar);
+                   containerPersonaje.style.transform = `translate(${Math.random()*2-1}px, ${Math.random()*2-1}px)`;
+                }, 50);
+                setTimeout(lanzarEstrellaFugaz, 500); 
+                if (navigator.vibrate) navigator.vibrate([30, 50]);
+            }, 800);
+        });
+    </script>
+</body>
+</html>
