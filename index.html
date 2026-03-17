@@ -257,13 +257,13 @@
     </div>
 
     <div id="img-gracias-wrap">
-        <img id="img-gracias" src="KeylaCielo/Gracias.png" alt="Gracias">
+        <img id="img-gracias" src="KeylaCielo/Gracias.jpg" alt="Gracias">
     </div>
 
 <script>
     
     const NOMBRE_CARPETA = "KeylaCielo";
-    const PALABRA_CIELO  = "TE AMOO";
+    const PALABRA_CIELO  = "TE AMOO MUCHOO";
 
     const btn              = document.getElementById('btn-accion');
     const body             = document.body;
@@ -308,7 +308,7 @@
     }
 
     window.addEventListener('deviceorientation', (e) => {
-        tiltX = (e.gamma || 0) / 45 * 15; // -15 a 15 px
+        tiltX = (e.gamma || 0) / 45 * 15; 
         tiltY = (e.beta  || 0) / 90 * 15;
         aplicarParalaje();
     });
@@ -406,7 +406,7 @@
 
         function paso(now) {
             const t = Math.min((now - startTime) / durMs, 1);
-            const ease = t < 0.5 ? 2*t*t : -1+(4-2*t)*t; // easeInOut
+            const ease = t < 0.5 ? 2*t*t : -1+(4-2*t)*t; 
             const x = startX + dx * ease;
             const y = startY + dy * ease;
             f.style.left = x + 'px';
