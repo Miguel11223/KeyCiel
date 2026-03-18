@@ -222,12 +222,12 @@
             font-size: 2.4rem; line-height: 1;
             cursor: pointer; z-index: 9999;
             user-select: none; border: none; background: none; padding: 6px;
-            animation: estrella-brillo 2s ease-in-out infinite alternate;
+            width: 44px; height: 44px; animation: estrella-brillo 2.5s ease-in-out infinite alternate;
             transition: opacity 0.4s;
         }
         @keyframes estrella-brillo {
-            0%  { filter: drop-shadow(0 0 5px gold);  transform: scale(1)    rotate(-6deg); }
-            100%{ filter: drop-shadow(0 0 22px gold) drop-shadow(0 0 40px rgba(255,200,0,0.6)); transform: scale(1.2) rotate(6deg); }
+            0%  { filter: drop-shadow(0 0 4px rgba(255,255,255,0.6));  transform: scale(1) rotate(-4deg); }
+            100%{ filter: drop-shadow(0 0 14px rgba(255,255,255,0.95)) drop-shadow(0 0 28px rgba(200,230,255,0.5)); transform: scale(1.15) rotate(4deg); }
         }
         #btn-estrella:active { transform: scale(0.75) !important; }
 
@@ -317,7 +317,7 @@
     </div>
 
     <!-- ★ ESTRELLA BOTÓN — esquina superior derecha -->
-    <button id="btn-estrella" title="Un mensaje para ti ✨">⭐</button>
+    <button id="btn-estrella" title="Un mensaje para ti"><svg width="32" height="32" viewBox="0 0 51 48" xmlns="http://www.w3.org/2000/svg"><polygon points="25.5,2 32,18 49,19.5 36.5,31 40.5,47 25.5,38.5 10.5,47 14.5,31 2,19.5 19,18" fill="white" stroke="rgba(255,255,255,0.3)" stroke-width="1"/></svg></button>
 
     <!-- COHETE animado -->
     <div id="cohete">🚀</div>
