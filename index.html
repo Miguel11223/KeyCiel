@@ -77,12 +77,14 @@
         #btn-accion:active { transform: translate(-50%, -45%); background: rgba(255,255,255,0.3); }
         body.en-accion #btn-accion { opacity: 0; pointer-events: none; transform: translate(-50%,-70%); }
 
-        
         .sujeto-container {
             position: absolute; bottom: 30px; z-index: 170;
             width: 140px; height: 140px;
             display: flex; justify-content: center; align-items: flex-end;
+            cursor: default; transition: filter 0.3s;
         }
+        .sujeto-container.clickeable { cursor: pointer; }
+        .sujeto-container.clickeable:hover { filter: brightness(1.2); }
         .animacion-respirar { animation: respirar 2.5s infinite ease-in-out; }
         @keyframes respirar { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
         .pixel-art {
@@ -206,10 +208,10 @@
 
         #btn-estrella {
             position: fixed; top: 16px; right: 16px;
-            font-size: 2.4rem; line-height: 1;
             cursor: pointer; z-index: 9999;
             user-select: none; border: none; background: none; padding: 6px;
-            width: 44px; height: 44px; animation: estrella-brillo 2.5s ease-in-out infinite alternate;
+            width: 44px; height: 44px;
+            animation: estrella-brillo 2.5s ease-in-out infinite alternate;
             transition: opacity 0.4s;
         }
         @keyframes estrella-brillo {
@@ -224,7 +226,7 @@
             display: none; opacity: 0;
         }
 
-        #panel-mensaje {
+        #panel-mensaje, #panel-personaje {
             position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0.4);
             width: min(88vw, 440px);
@@ -233,38 +235,39 @@
             border-radius: 28px;
             padding: 36px 28px 28px;
             text-align: center;
-            z-index: 10000;
             opacity: 0; pointer-events: none;
             transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.175,0.885,0.32,1.275);
             box-shadow: 0 0 80px rgba(79,172,254,0.2), 0 0 0 1px rgba(79,172,254,0.07);
             backdrop-filter: blur(16px);
             overflow-y: auto; max-height: 90vh;
         }
-        #panel-mensaje.visible {
+        #panel-mensaje { z-index: 10000; }
+        #panel-personaje { z-index: 10000; }
+        #panel-mensaje.visible, #panel-personaje.visible {
             opacity: 1; pointer-events: all;
             transform: translate(-50%, -50%) scale(1);
         }
         .deco-estrellas { font-size: 1.5rem; letter-spacing: 10px; margin-bottom: 16px; }
-        #texto-panel {
+        .texto-panel {
             font-family: 'Fredoka One', cursive;
             color: #e8f4ff; font-size: 1.1rem; line-height: 1.85;
             text-shadow: 0 0 12px rgba(79,172,254,0.3);
             white-space: pre-line; text-align: left;
         }
-        #texto-panel em { color: #7dd3fc; font-style: normal; }
+        .texto-panel em { color: #7dd3fc; font-style: normal; }
         .linea-sep {
             width: 60px; height: 1px;
             background: linear-gradient(to right, transparent, rgba(79,172,254,0.5), transparent);
             margin: 20px auto;
         }
-        #cerrar-panel {
+        .btn-cerrar {
             padding: 10px 36px; border-radius: 50px;
             border: 1px solid rgba(255,255,255,0.2);
             color: rgba(255,255,255,0.65); cursor: pointer;
             font-family: 'Fredoka One', cursive; font-size: 0.95rem;
             background: transparent; transition: all 0.25s; letter-spacing: 1px;
         }
-        #cerrar-panel:hover { background: rgba(79,172,254,0.15); color: #fff; border-color: rgba(79,172,254,0.4); }
+        .btn-cerrar:hover { background: rgba(79,172,254,0.15); color: #fff; border-color: rgba(79,172,254,0.4); }
     </style>
 </head>
 <body>
@@ -307,8 +310,7 @@
 
     <div id="panel-mensaje">
         <div class="deco-estrellas">✦ ✧ ✦</div>
-
-        <div id="texto-panel">Te QUIEROOO MUCHOOOO
+        <div class="texto-panel" id="texto-panel">Te QUIEROOO MUCHOOOO
             El objetivo de esta pagina no es solo 
             declararme ante ti, si no que te quiero decir 
             que es para que tal vez si en algun momento estas 
@@ -320,27 +322,75 @@
             me permites que asi sea, se que suena de viejito pero
             no encuentro mejores palabras para decirtelo y sin mas...
 <em>Keyla yo TE AMO y espero que tu y Dios quiera que tu tambien</em></div>
-
         <div class="linea-sep"></div>
-        <button id="cerrar-panel">cerrar ✦</button>
+        <button class="btn-cerrar" id="cerrar-panel">cerrar ✦</button>
+    </div>
+
+    <div id="panel-personaje">
+        <div class="deco-estrellas">✦ ✧ ✦</div>
+        <div class="texto-panel" id="texto-panel-personaje">Cosas que quiero hacer contigo:
+            Sabes el otro dia me preguntaste cuales eran mis planes contigo 
+            y no supe responderte, pero ahora creo que se lo que tuve que decir y 
+            me disculpo por tardar 
+            1. Quiero conocerte aun mas de lo que ya hago, suena simple pero quiero 
+            que me permitas ser parte de tu vida y conocer de ella, se que no siempre es feliz
+            pero aun si son buenas o malas quiero estar para ti asi como tu has estado para mi.
+
+            2. Quiero viajar alguna vez contigo, no se a donde te sere sincero pero quiero que 
+            alguna vez podamos viajar asi como ismael y Maite, quiero que veamos mas alla del 
+            horizonte, mas alla de donde el sol toca.
+
+            3. Quiero bailar alguna vez contigo, me acuerdo que en el tiempo que me fui
+            me dijiste que bailabas como un gusanito y quiero bailar cual gusanito contigo 
+            pues juntos es mas divertido.
+
+            4. Quiero conocer lo mas que pueda de Nuevo Laredo junto a  ti, a decir verdad conozco 
+            poco de aqui apesar de vivir 21 primaveras aqui jaja.
+
+            5. Quiero que las cosas que tu sabes y yo no, me las enseñes y enseñarte lo que yo 
+            sepa y tu no, pero tambien lo que ya se experimentarlo contigo.
+
+            6. Una vez me dijiste que tiempo atras querias un caballito de mar, entonces quiero 
+            conseguirte uno ya sea de verdad, juguete o algo que puedas usar, se que suena tonto pero 
+            a mi me gustaria.
+
+            7. Sonara tonto pero quiero ir a comer unos bonneless contigo, llevo casi un mes queriendo
+            comprarme unos pero por x o y razon no he podido pero quiero hacer eso contigo.
+
+            8. Quiero regalarte una flor de loto que dicen que son de buena suerte, tal vez no la necesitas 
+            pero por un dialogo tuyo antiguo me recuerdan a veces a ti.
+
+            9. Quiero decirte tantas veces como me sea posible que te amo, no por inercia o cosas asi,
+            si no para que no lo olvides pq tu, tu eres mi doris favorita.
+
+            10. Quiero comprarte una orquilla como la de loulan, no se si la usaras pero si recuerdas la serie
+            tenia un significado de que apreciabas o querias una relacion con esa persona y aunque ya lo somos  
+            me haria mucha ilusion.
+
+            Sin mas... te quiero muchooo
+        </div>
+        <div class="linea-sep"></div>
+        <button class="btn-cerrar" id="cerrar-panel-personaje">cerrar ✦</button>
     </div>
 
 <script>
     const NOMBRE_CARPETA = "KeylaCielo";
     const PALABRA_CIELO  = "TE AMOO";
 
-    const btn             = document.getElementById('btn-accion');
-    const body            = document.body;
-    const imgPersonaje    = document.getElementById('img-personaje');
-    const containerP      = document.querySelector('.sujeto-container');
-    const capaCielo       = document.getElementById('cielo-estrellas');
-    const divConstelacion = document.getElementById('constelacion');
-    const luna            = document.getElementById('luna');
-    const imgGraciasWrap  = document.getElementById('img-gracias-wrap');
-    const btnEstrella     = document.getElementById('btn-estrella');
-    const cohete          = document.getElementById('cohete');
-    const panelMensaje    = document.getElementById('panel-mensaje');
-    const cerrarPanel     = document.getElementById('cerrar-panel');
+    const btn                  = document.getElementById('btn-accion');
+    const body                 = document.body;
+    const imgPersonaje         = document.getElementById('img-personaje');
+    const containerP           = document.querySelector('.sujeto-container');
+    const capaCielo            = document.getElementById('cielo-estrellas');
+    const divConstelacion      = document.getElementById('constelacion');
+    const luna                 = document.getElementById('luna');
+    const imgGraciasWrap       = document.getElementById('img-gracias-wrap');
+    const btnEstrella          = document.getElementById('btn-estrella');
+    const cohete               = document.getElementById('cohete');
+    const panelMensaje         = document.getElementById('panel-mensaje');
+    const cerrarPanel          = document.getElementById('cerrar-panel');
+    const panelPersonaje       = document.getElementById('panel-personaje');
+    const cerrarPanelPersonaje = document.getElementById('cerrar-panel-personaje');
 
     imgPersonaje.src = `${NOMBRE_CARPETA}/Quieto.png`;
     divConstelacion.innerText = PALABRA_CIELO;
@@ -492,6 +542,15 @@
         }, 400);
     });
 
+    containerP.addEventListener('click', () => {
+        if (!body.classList.contains('fase-jalando')) return;
+        panelPersonaje.classList.add('visible');
+    });
+
+    cerrarPanelPersonaje.addEventListener('click', () => {
+        panelPersonaje.classList.remove('visible');
+    });
+
     btn.addEventListener('click', () => {
         body.classList.add('en-accion');
         containerP.classList.remove('animacion-respirar');
@@ -503,6 +562,7 @@
             body.classList.add('fase-jalando');
             imgPersonaje.src = `${NOMBRE_CARPETA}/Quieto.png`;
             containerP.style.animation='none';
+            containerP.classList.add('clickeable');
             setInterval(()=>{
                 if(!body.classList.contains('fase-jalando'))return;
                 containerP.style.transform=`translate(${Math.random()*2-1}px,${Math.random()*2-1}px)`;
