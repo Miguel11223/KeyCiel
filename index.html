@@ -308,6 +308,8 @@
 
     <div id="cohete">🚀</div>
 
+    <audio id="musica-fondo" src="KeylaCielo/micorazonencantado.mp3" loop preload="auto"></audio>
+
     <div id="panel-mensaje">
         <div class="deco-estrellas">✦ ✧ ✦</div>
         <div class="texto-panel" id="texto-panel">Te QUIEROOO MUCHOOOO
@@ -391,6 +393,7 @@
     const cerrarPanel          = document.getElementById('cerrar-panel');
     const panelPersonaje       = document.getElementById('panel-personaje');
     const cerrarPanelPersonaje = document.getElementById('cerrar-panel-personaje');
+    const musicaFondo          = document.getElementById('musica-fondo');
 
     imgPersonaje.src = `${NOMBRE_CARPETA}/Quieto.png`;
     divConstelacion.innerText = PALABRA_CIELO;
@@ -556,6 +559,16 @@
         containerP.classList.remove('animacion-respirar');
         body.classList.add('fase-lanzando');
         imgPersonaje.src = `${NOMBRE_CARPETA}/Lanzando.png`;
+
+        musicaFondo.volume = 0;
+        musicaFondo.currentTime = 0;
+        musicaFondo.play().catch(()=>{});
+        let vol = 0;
+        const fadeIn = setInterval(() => {
+            vol += 0.05;
+            if (vol >= 0.6) { vol = 0.6; clearInterval(fadeIn); }
+            musicaFondo.volume = vol;
+        }, 150);
 
         setTimeout(()=>{
             body.classList.remove('fase-lanzando');
